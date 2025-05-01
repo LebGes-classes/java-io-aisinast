@@ -59,8 +59,22 @@ public class Student {
         System.out.println("Ученик успешно добавлен!" + "\n" + student.toString());
     }
 
-    public void transferStudent(String newGroup) {
+    public static void transferStudent(String name, String newGroup) {
+        int studentID = 0;
 
+        for (Student student : students) {
+            if (student.getName().equals(name)) {
+                studentID = student.getId();
+                student.setGroupID(Group.getGroupID(newGroup));
+            }
+        }
+
+        if (studentID == 0) {
+            System.out.println("Имя введено некорректно или студента с таким именем не существует. Повторите попытку");
+        } else {
+            Excel.changeCellValue("students", studentID, 2, Group.getGroupID(newGroup));
+            System.out.println(name + " успешно переведен(-а) в группу " + newGroup);
+        }
     }
 
     public static void printStudentsList() {
@@ -130,6 +144,5 @@ public class Student {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

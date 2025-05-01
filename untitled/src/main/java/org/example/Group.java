@@ -76,7 +76,7 @@ public class Group {
 
     public static void addNewGroup(String groupNumber) {
         String newValue = groupNumber;
-        int newId = groups.getLast().getId();
+        int newId = groups.getLast().getId() + 1;
 
         Group group = new Group(newId, newValue);
 

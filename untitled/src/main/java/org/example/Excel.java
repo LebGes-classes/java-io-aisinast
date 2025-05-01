@@ -24,17 +24,14 @@ public class Excel {
             Workbook workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheet(sheetName);
 
-            int count = 0;
             for (Row row : sheet) {
-                count ++;
-
-                if (count == 1) {
+                if (row.getRowNum() == 0) {
                     continue;
                 }
 
                 if (dataID == row.getCell(0).getNumericCellValue()) {
-                    if (newValue instanceof int) {
-                        row.getCell(cellNumber).setCellValue((Double) newValue);
+                    if (newValue instanceof Integer) {
+                        row.getCell(cellNumber).setCellValue((Integer) newValue);
                     } else if (newValue instanceof String) {
                         row.getCell(cellNumber).setCellValue((String) newValue);
                     }

@@ -77,6 +77,17 @@ public class AppMenu {
             case 1:
                 clearConsole();
 
+                System.out.print("Введите ФИО студента, которого нужно перевести: ");
+                String studentName = scanner.nextLine();
+
+                System.out.print("Введите номер группы, в которую нужно перевести студента: ");
+                String newGroupNumber = scanner.nextLine();
+
+                Student.transferStudent(studentName, newGroupNumber);
+
+                waitForEnter();
+                showStudentMenu();
+
                 break;
             case 2:
                 clearConsole();
