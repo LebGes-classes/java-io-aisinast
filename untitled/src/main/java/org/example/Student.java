@@ -1,19 +1,20 @@
 package org.example;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class Student {
-    private static int id;
+    private int id;
     private String name;
     private int groupID;
 
@@ -46,10 +47,10 @@ public class Student {
     }
 
     public static void addNewStudent(String name, String group) {
-        id = students.getLast().getId() + 1;
+        int newId = students.getLast().getId() + 1;
         int groupID = Group.getGroupID(group);
 
-        Student student = new Student(id, name, groupID);
+        Student student = new Student(newId, name, groupID);
 
         students.add(student);
 
@@ -63,7 +64,6 @@ public class Student {
     }
 
     public static void printStudentsList() {
-        readFromTable();
         for (Student student : students) {
             System.out.println(student.toString());
         }
@@ -73,7 +73,7 @@ public class Student {
         return ("ID: " + id + ", имя: " + name + ", " + Group.getGroupValue(groupID));
     }
 
-    private static void readFromTable() {
+    public static void readFromTable() {
         try {
             FileInputStream fis = new FileInputStream(Excel.getFilepath());
 
@@ -106,13 +106,18 @@ public class Student {
     private void addIntoTable() {
         try {
             FileInputStream fis = new FileInputStream(Excel.getFilepath());
-            Workbook workbook = new HSSFWorkbook(fis);
+            Workbook workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheet("students");
 
             int rowIndex = students.size();
 
             Row row = sheet.createRow(rowIndex);
-            row.getCell(0).setCellValue(students.getLast().getId() + 1);
+
+            row.createCell(0);
+            row.createCell(1);
+            row.createCell(2);
+
+            row.getCell(0).setCellValue(students.getLast().getId());
             row.getCell(1).setCellValue(name);
             row.getCell(2).setCellValue(groupID);
 
