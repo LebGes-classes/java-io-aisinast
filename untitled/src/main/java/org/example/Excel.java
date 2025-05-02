@@ -48,4 +48,28 @@ public class Excel {
             throw new RuntimeException(e);
         }
     }
+
+    public static int removeRow(String sheetName, int dataID) {
+        try {
+            FileInputStream fis = new FileInputStream(FILEPATH);
+            Workbook workbook = new XSSFWorkbook(fis);
+
+            Sheet sheet = workbook.getSheet(sheetName);
+
+            int lastRowIndex = sheet.getLastRowNum();
+
+            for (int i = 1; i < lastRowIndex; i++) {
+                Row row = sheet.getRow(i);
+
+                if (row.getCell(0).getNumericCellValue() == dataID) {
+                    sheet.removeRow(row);
+                }
+                return 1;
+            }
+
+            return -1;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

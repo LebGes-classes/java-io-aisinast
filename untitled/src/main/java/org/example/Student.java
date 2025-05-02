@@ -83,6 +83,36 @@ public class Student {
         }
     }
 
+    public static void expelStudent(String name) {
+        int id = Student.getStudentID(name);
+
+        if (id == -1) {
+            System.out.println("Похоже, студента с таким именем не существует. Повторите попытку");
+        } else {
+            Excel.removeRow("students", id);
+
+            for (int i = 1; i < students.size(); i++) {
+                Student student = students.get(i);
+
+                if (student.getName().equals(name)) {
+                    students.remove(i);
+                }
+            }
+
+            System.out.println(name + " отчислен(-а) :(");
+        }
+    }
+
+    public static int getStudentID(String name) {
+    for (Student student : students) {
+            if (student.getName().equals(name)) {
+                return student.getId();
+            }
+        }
+
+    return -1;
+    }
+
     public String toString() {
         return ("ID: " + id + ", имя: " + name + ", " + Group.getGroupValue(groupID));
     }

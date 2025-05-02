@@ -97,6 +97,7 @@ public class AppMenu {
 
                 System.out.print("Введите номер группы: ");
                 String group = scanner.nextLine();
+
                 Student.addNewStudent(name, group);
 
                 waitForEnter();
@@ -105,6 +106,12 @@ public class AppMenu {
             case 3:
                 clearConsole();
 
+                System.out.print("Введите имя студента, которого нужно отчислить: ");
+                String studentToExpelName = scanner.nextLine();
+
+                Student.expelStudent(studentToExpelName);
+                waitForEnter();
+                showStudentMenu();
                 break;
             case 4:
                 clearConsole();
