@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,6 +66,13 @@ public class Group {
     }
 
     public static void addNewGroup(String groupNumber) {
+        for (Group group : groups) {
+            if (group.getValue().equals(groupNumber)) {
+                System.out.println("Группа с таким номером уже существует");
+                return;
+            }
+        }
+
         String newValue = groupNumber;
         int newId = groups.getLast().getId() + 1;
 
@@ -73,6 +81,31 @@ public class Group {
         groups.add(group);
 
         group.addIntoTable();
+
+        System.out.println("Группа " + groupNumber + " успешно создана!");
+    }
+
+    public static void listOfStudentsInGroup(String groupValue) {
+        int groupID = getGroupID(groupValue);
+
+        if (groupID == 0) {
+            System.out.println("Похоже, такой группы не существует. Повторите попытку");
+            return;
+        }
+
+        List<Student> studentsInGroup = new ArrayList<>();
+
+        for (Student student : Student.getStudentsList()) {
+            if (student.getGroupID() == groupID) {
+                studentsInGroup.add(student);
+            }
+        }
+
+        studentsInGroup.sort(Comparator.comparing(Student::getName));
+
+        for (int i = 0; i < studentsInGroup.size(); i++) {
+            System.out.println("" + (i + 1) + ". " + studentsInGroup.get(i).toString());
+        }
     }
 
     public static void printGroupsList() {

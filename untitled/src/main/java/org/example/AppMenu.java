@@ -137,6 +137,7 @@ public class AppMenu {
         System.out.println("3. Добавить новую группу");
         System.out.println("4. Удалить группу");
         System.out.println("0. Назад");
+        System.out.print("\nВыберите действие: ");
 
         int choiсe = scanner.nextInt();
         scanner.nextLine();
@@ -153,10 +154,23 @@ public class AppMenu {
             case 2:
                 clearConsole();
 
+                System.out.print("Введите номер группы: ");
+                String groupValue = scanner.nextLine();
+
+                Group.listOfStudentsInGroup(groupValue);
+
+                showGroupMenu();
                 break;
             case 3:
                 clearConsole();
 
+                System.out.print("Введите номер группы, которую нужно создать: ");
+                String newGroupValue = scanner.nextLine();
+
+                Group.addNewGroup(newGroupValue);
+
+                waitForEnter();
+                showGroupMenu();
                 break;
             case 4:
                 clearConsole();
@@ -164,7 +178,7 @@ public class AppMenu {
                 break;
             case 0:
                 clearConsole();
-                showGroupMenu();
+                MainMenu();
                 break;
             default:
                 System.out.println("Некорректный ввод!");

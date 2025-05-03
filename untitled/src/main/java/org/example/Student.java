@@ -18,7 +18,7 @@ public class Student {
     private String name;
     private int groupID;
 
-    static List<Student> students = new ArrayList<>();
+    private static List<Student> students = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -40,7 +40,7 @@ public class Student {
         this.name = name;
     }
 
-    public List<Student> getStudentsList() {
+    public static List<Student> getStudentsList() {
         return students;
     }
 
