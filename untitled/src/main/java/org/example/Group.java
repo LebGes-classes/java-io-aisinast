@@ -16,7 +16,6 @@ import java.util.List;
 public class Group {
     private int id;
     private String value;
-    private int countStudents;
 
     static List<Group> groups = new ArrayList<>();
 
@@ -32,12 +31,8 @@ public class Group {
         this.value = value;
     }
 
-    public int getCountStudents() {
-        return countStudents;
-    }
-
-    public void setCountStudents(int countStudents) {
-        this.countStudents = countStudents;
+    public static List<Group> getGroups() {
+        return groups;
     }
 
     public Group(int id, String value) {
@@ -66,12 +61,7 @@ public class Group {
             }
         }
 
-        if (groupID != 0) {
-            return groupID;
-        } else {
-            addNewGroup(value);
-            return groups.getLast().getId();
-        }
+        return groupID;
     }
 
     public static void addNewGroup(String groupNumber) {
@@ -92,7 +82,12 @@ public class Group {
     }
 
     public String toString() {
-        return ("ID: " + id + ", номер группы: " + value + "\n\tКоличество студентов: " + countStudents);
+        return ("ID: " + id + ", номер группы: " + value);
+    }
+
+    public static void getStudentsInGroup(String groupValue) {
+        int groupID = getGroupID(groupValue);
+
     }
 
     public static void readFromTable() {

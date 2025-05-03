@@ -133,17 +133,21 @@ public class AppMenu {
     public static void showGroupMenu() {
         System.out.println("\t\tУПРАВЛЕНИЕ ГРУППАМИ");
         System.out.println("1. Вывести список групп");
-        System.out.println("2. Посмотреть список группы");
+        System.out.println("2. Вывести список студентов группы");
         System.out.println("3. Добавить новую группу");
         System.out.println("4. Удалить группу");
         System.out.println("0. Назад");
 
-        int choise = scanner.nextInt();
+        int choiсe = scanner.nextInt();
         scanner.nextLine();
 
-        switch (choise) {
+        switch (choiсe) {
             case 1:
                 clearConsole();
+
+                Group.printGroupsList();
+                waitForEnter();
+                showGroupMenu();
 
                 break;
             case 2:
@@ -160,7 +164,7 @@ public class AppMenu {
                 break;
             case 0:
                 clearConsole();
-
+                showGroupMenu();
                 break;
             default:
                 System.out.println("Некорректный ввод!");

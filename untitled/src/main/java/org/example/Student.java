@@ -40,6 +40,10 @@ public class Student {
         this.name = name;
     }
 
+    public List<Student> getStudentsList() {
+        return students;
+    }
+
     public Student(int id, String name, int groupID) {
         this.id = id;
         this.name = name;
@@ -49,6 +53,11 @@ public class Student {
     public static void addNewStudent(String name, String group) {
         int newId = students.getLast().getId() + 1;
         int groupID = Group.getGroupID(group);
+
+        if (groupID == 0) {
+            System.out.println("Группы с таким номером не существует. Сначала нужно ее создать");
+            return;
+        }
 
         Student student = new Student(newId, name, groupID);
 
@@ -65,7 +74,15 @@ public class Student {
         for (Student student : students) {
             if (student.getName().equals(name)) {
                 studentID = student.getId();
-                student.setGroupID(Group.getGroupID(newGroup));
+
+                int groupID = Group.getGroupID(newGroup);
+
+                if (groupID == 0) {
+                    System.out.println("Группы с таким номером не существует. Сначала нужно ее создать");
+                    return;
+                }
+
+                student.setGroupID(groupID);
             }
         }
 
