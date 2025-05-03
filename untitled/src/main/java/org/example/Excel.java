@@ -51,6 +51,8 @@ public class Excel {
 
     public static int removeRow(String sheetName, int dataID) {
         try {
+            boolean found = false;
+
             FileInputStream fis = new FileInputStream(FILEPATH);
             Workbook workbook = new XSSFWorkbook(fis);
 
@@ -58,14 +60,24 @@ public class Excel {
 
             int lastRowIndex = sheet.getLastRowNum();
 
-            for (int i = 1; i < lastRowIndex; i++) {
+            for (int i = 1; i <= lastRowIndex; i++) {
                 Row row = sheet.getRow(i);
 
                 if (row.getCell(0).getNumericCellValue() == dataID) {
                     sheet.removeRow(row);
+                    found = true;
                 }
-                return 1;
             }
+
+            fis.close();
+
+            if (found) {
+                FileOutputStream fos = new FileOutputStream(FILEPATH);
+                workbook.write(fos);
+                fos.close();
+            }
+
+            workbook.close();
 
             return -1;
         } catch (IOException e) {
