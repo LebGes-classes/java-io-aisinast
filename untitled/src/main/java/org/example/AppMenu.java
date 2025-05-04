@@ -77,7 +77,9 @@ public class AppMenu {
             case 1:
                 clearConsole();
 
-                System.out.print("Введите ФИО студента, которого нужно перевести: ");
+                System.out.println("1. Перевести студента\n");
+
+                System.out.print("Введите ФИО студента: ");
                 String studentName = scanner.nextLine();
 
                 System.out.print("Введите номер группы, в которую нужно перевести студента: ");
@@ -92,7 +94,9 @@ public class AppMenu {
             case 2:
                 clearConsole();
 
-                System.out.print("Введите имя студента: ");
+                System.out.println("2. Добавить студента\n");
+
+                System.out.print("Введите ФИО студента: ");
                 String name = scanner.nextLine();
 
                 System.out.print("Введите номер группы: ");
@@ -106,7 +110,9 @@ public class AppMenu {
             case 3:
                 clearConsole();
 
-                System.out.print("Введите имя студента, которого нужно отчислить: ");
+                System.out.println("3. Отчислить студента\n");
+
+                System.out.print("Введите имя студента: ");
                 String studentToExpelName = scanner.nextLine();
 
                 Student.expelStudent(studentToExpelName);
@@ -139,12 +145,14 @@ public class AppMenu {
         System.out.println("0. Назад");
         System.out.print("\nВыберите действие: ");
 
-        int choiсe = scanner.nextInt();
+        int choice = scanner.nextInt();
         scanner.nextLine();
 
-        switch (choiсe) {
+        switch (choice) {
             case 1:
                 clearConsole();
+
+                System.out.println("1. Вывести список групп\n");
 
                 Group.printGroupsList();
                 waitForEnter();
@@ -153,6 +161,8 @@ public class AppMenu {
                 break;
             case 2:
                 clearConsole();
+
+                System.out.println("2. Вывести список студентов группы\n");
 
                 System.out.print("Введите номер группы: ");
                 String groupValue = scanner.nextLine();
@@ -164,7 +174,9 @@ public class AppMenu {
             case 3:
                 clearConsole();
 
-                System.out.print("Введите номер группы, которую нужно создать: ");
+                System.out.println("3. Добавить новую группу\n");
+
+                System.out.print("Введите номер группы: ");
                 String newGroupValue = scanner.nextLine();
 
                 Group.addNewGroup(newGroupValue);
@@ -175,6 +187,15 @@ public class AppMenu {
             case 4:
                 clearConsole();
 
+                System.out.println("4. Удалить группу");
+
+                System.out.print("Введите номер группы: ");
+                String groupToRemove = scanner.nextLine();
+
+                Group.removeGroup(groupToRemove);
+
+                waitForEnter();
+                showGroupMenu();
                 break;
             case 0:
                 clearConsole();

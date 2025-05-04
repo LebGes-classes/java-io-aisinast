@@ -85,6 +85,32 @@ public class Group {
         System.out.println("Группа " + groupNumber + " успешно создана!");
     }
 
+    public static void removeGroup(String groupValue) {
+        int groupID = getGroupID(groupValue);
+
+        if (groupID == 0) {
+            System.out.println("Похоже, такой группы не существует. Повторите попытку");
+            return;
+        }
+
+        for (Student student : Student.getStudentsList()) {
+            if (student.getGroupID() == groupID) {
+                System.out.println("В этой группе есть хотя бы один человек. Чтобы удалить группу, отчислите всех " +
+                        "студентов этой группы");
+                return;
+            }
+        }
+        for (Group group : groups) {
+            if (group.getId() == groupID) {
+                groups.remove(group);
+            }
+        }
+
+        Excel.removeRow("groups", groupID);
+
+        System.out.println("Группа удалена");
+    }
+
     public static void listOfStudentsInGroup(String groupValue) {
         int groupID = getGroupID(groupValue);
 
@@ -116,11 +142,6 @@ public class Group {
 
     public String toString() {
         return ("ID: " + id + ", номер группы: " + value);
-    }
-
-    public static void getStudentsInGroup(String groupValue) {
-        int groupID = getGroupID(groupValue);
-
     }
 
     public static void readFromTable() {
