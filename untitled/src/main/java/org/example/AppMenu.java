@@ -8,6 +8,8 @@ public class AppMenu {
     public static void main(String[] args) {
         Student.readFromTable();
         Group.readFromTable();
+        Subject.readFromTable();
+
         MainMenu();
     }
 
@@ -44,7 +46,7 @@ public class AppMenu {
                 break;
             case 5:
                 clearConsole();
-
+                showSubjectMenu();
                 break;
             case 6:
                 clearConsole();
@@ -201,6 +203,63 @@ public class AppMenu {
                 clearConsole();
                 MainMenu();
                 break;
+            default:
+                System.out.println("Некорректный ввод!");
+                waitForEnter();
+                clearConsole();
+                showGroupMenu();
+                break;
+        }
+    }
+
+    public static void showSubjectMenu() {
+        System.out.println("\t\tУПРАВЛЕНИЕ ПРЕДМЕТАМИ");
+        System.out.println("1. Добавить предмет");
+        System.out.println("2. Удалить предмет");
+        System.out.println("3. Вывести список всех предметов");
+        System.out.println("0. Назад");
+        System.out.print("\nВыберите действие: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                clearConsole();
+
+                System.out.println("1. Добавить предмет\n");
+
+                System.out.print("Введите название предмета: ");
+                String subject = scanner.nextLine();
+                Subject.addNewSubject(subject);
+
+                waitForEnter();
+                showSubjectMenu();
+                break;
+            case 2:
+                clearConsole();
+
+                System.out.println("2. Удалить предмет\n");
+
+                System.out.print("Введите название предмета: ");
+                String subjectToRemove = scanner.nextLine();
+                Subject.removeSubject(subjectToRemove);
+
+                waitForEnter();
+                showSubjectMenu();
+                break;
+            case 3:
+                clearConsole();
+
+                System.out.println("3. Вывести список всех предметов\n");
+                Subject.printSubjectsList();
+
+                waitForEnter();
+                showSubjectMenu();
+                break;
+            case 0:
+                clearConsole();
+                MainMenu();
             default:
                 System.out.println("Некорректный ввод!");
                 waitForEnter();
