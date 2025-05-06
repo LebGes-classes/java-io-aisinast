@@ -100,9 +100,11 @@ public class Group {
                 return;
             }
         }
-        for (Group group : groups) {
+        Iterator<Group> groupIterator = groups.iterator();
+        while (groupIterator.hasNext()) {
+            Group group = groupIterator.next();
             if (group.getId() == groupID) {
-                groups.remove(group);
+                groupIterator.remove();
             }
         }
 

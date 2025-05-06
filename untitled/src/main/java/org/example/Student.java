@@ -108,11 +108,11 @@ public class Student {
         } else {
             Excel.removeRow("students", id);
 
-            for (int i = 1; i < students.size(); i++) {
-                Student student = students.get(i);
-
-                if (student.getName().equals(name)) {
-                    students.remove(i);
+            Iterator<Student> studentIterator = students.iterator();
+            while (studentIterator.hasNext()) {
+                Student student = studentIterator.next();
+                if (student.getId() == id) {
+                    studentIterator.remove();
                 }
             }
 

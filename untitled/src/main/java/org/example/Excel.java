@@ -58,12 +58,12 @@ public class Excel {
 
             Sheet sheet = workbook.getSheet(sheetName);
 
-            int lastRowIndex = sheet.getLastRowNum();
-
-            for (int i = 1; i <= lastRowIndex; i++) {
+            for (int i = sheet.getLastRowNum();  i >= 1; i--) {
                 Row row = sheet.getRow(i);
 
-                if (row.getCell(0).getNumericCellValue() == dataID) {
+                if (row == null || row.getCell(0) == null) continue;
+
+                if ((int) row.getCell(0).getNumericCellValue() == dataID) {
                     sheet.removeRow(row);
                     found = true;
                 }
@@ -78,7 +78,6 @@ public class Excel {
             }
 
             workbook.close();
-
             return -1;
         } catch (IOException e) {
             throw new RuntimeException(e);
