@@ -9,20 +9,23 @@ public class AppMenu {
         Student.readFromTable();
         Group.readFromTable();
         Subject.readFromTable();
+        Teacher.readFromTable();
 
         MainMenu();
     }
 
     public static void MainMenu() {
-        System.out.println("\t\tКЛАССНЫЙ ЖУРНАЛ");
-        System.out.println("1. Управление студентами");
-        System.out.println("2. Управление оценками");
-        System.out.println("3. Управление расписанием");
-        System.out.println("4. Управление группами");
-        System.out.println("5. Управление предметами");
-        System.out.println("6. Управление преподавателями");
-        System.out.println("0. Выход");
-        System.out.print("\nВыберите действие: ");
+        System.out.print("""
+                \t\tКЛАССНЫЙ ЖУРНАЛ
+                1. Управление студентами
+                2. Управление оценками
+                3. Управление расписанием
+                4. Управление группами
+                5. Управление предметами
+                6. Управление преподавателями
+                0. Выход
+                \nВыберите действие: 
+                """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -50,7 +53,7 @@ public class AppMenu {
                 break;
             case 6:
                 clearConsole();
-
+                showTeacherMenu();
                 break;
             case 0:
                 System.exit(0);
@@ -64,13 +67,15 @@ public class AppMenu {
     }
 
     public static void showStudentMenu() {
-        System.out.println("\t\tУПРАВЛЕНИЕ СТУДЕНТАМИ");
-        System.out.println("1. Перевести студента");
-        System.out.println("2. Добавить студента");
-        System.out.println("3. Отчислить студента");
-        System.out.println("4. Вывести список всех студентов");
-        System.out.println("0. Назад");
-        System.out.print("\nВыберите действие: ");
+        System.out.print("""
+                \t\tУПРАВЛЕНИЕ СТУДЕНТАМИ
+                1. Перевести студента
+                2. Добавить студента
+                3. Отчислить студента
+                4. Вывести список всех студентов
+                0. Назад
+                \nВыберите действие: 
+                """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -139,13 +144,15 @@ public class AppMenu {
     }
 
     public static void showGroupMenu() {
-        System.out.println("\t\tУПРАВЛЕНИЕ ГРУППАМИ");
-        System.out.println("1. Вывести список групп");
-        System.out.println("2. Вывести список студентов группы");
-        System.out.println("3. Добавить новую группу");
-        System.out.println("4. Удалить группу");
-        System.out.println("0. Назад");
-        System.out.print("\nВыберите действие: ");
+        System.out.print("""
+                \t\tУПРАВЛЕНИЕ ГРУППАМИ
+                1. Вывести список групп
+                2. Вывести список студентов группы
+                3. Добавить новую группу
+                4. Удалить группу
+                0. Назад
+                \nВыберите действие: 
+                """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -213,12 +220,14 @@ public class AppMenu {
     }
 
     public static void showSubjectMenu() {
-        System.out.println("\t\tУПРАВЛЕНИЕ ПРЕДМЕТАМИ");
-        System.out.println("1. Добавить предмет");
-        System.out.println("2. Удалить предмет");
-        System.out.println("3. Вывести список всех предметов");
-        System.out.println("0. Назад");
-        System.out.print("\nВыберите действие: ");
+        System.out.print("""
+                \t\tУПРАВЛЕНИЕ ПРЕДМЕТАМИ
+                1. Добавить предмет
+                2. Удалить предмет
+                3. Вывести список всех предметов
+                0. Назад
+                \nВыберите действие: 
+                """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -260,11 +269,78 @@ public class AppMenu {
             case 0:
                 clearConsole();
                 MainMenu();
+                break;
             default:
                 System.out.println("Некорректный ввод!");
                 waitForEnter();
                 clearConsole();
                 showGroupMenu();
+                break;
+        }
+    }
+
+    public static void showTeacherMenu() {
+        System.out.print("""
+                \t\tУПРАВЛЕНИЕ ПРЕПОДАВАТЕЛЯМИ
+                1. Вывести список преподавателей
+                2. Нанять преподавателя
+                3. Уволить преподавателя
+                0. Назад
+                \nВыберите действие: 
+                """);
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                clearConsole();
+                System.out.println("1. Вывести список преподавателей\n");
+
+                Teacher.printTeacherList();
+
+                System.out.println();
+                waitForEnter();
+                showTeacherMenu();
+                break;
+            case 2:
+                clearConsole();
+
+                System.out.println("2. Нанять преподавателя\n");
+
+                System.out.print("Введите ФИО преподавателя: ");
+                String name = scanner.nextLine();
+
+                System.out.print("Введите название предмета: ");
+                String subject = scanner.nextLine();
+
+                Teacher.hireTeacher(name, subject);
+
+                waitForEnter();
+                showTeacherMenu();
+                break;
+            case 3:
+                clearConsole();
+
+                System.out.println("3. Уволить преподавателя\n");
+
+                System.out.print("Введите ФИО преподавателя: ");
+                String teacherName = scanner.nextLine();
+
+                Teacher.dismissTeacher(teacherName);
+
+                waitForEnter();
+                showTeacherMenu();
+                break;
+            case 0:
+                clearConsole();
+                MainMenu();
+                break;
+            default:
+                System.out.println("Некорректный ввод!");
+                waitForEnter();
+                clearConsole();
+                showTeacherMenu();
                 break;
         }
     }
