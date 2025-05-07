@@ -36,10 +36,6 @@ public class Student {
         this.groupID = groupID;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public static List<Student> getStudentsList() {
         return students;
     }

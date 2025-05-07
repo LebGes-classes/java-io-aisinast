@@ -27,14 +27,9 @@ public class Subject {
         return subjectName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
     public static List<Subject> getSubjects() {
         return subjects;
     }
-
 
     public Subject(int id, String subjectName) {
         this.id = id;
@@ -69,6 +64,15 @@ public class Subject {
         }
 
         return id;
+    }
+
+    public static String getSubjectName(int id) {
+        for (Subject subject : subjects) {
+            if (subject.getId() == id) {
+                return subject.getSubjectName();
+            }
+        }
+        return "";
     }
 
     public static void removeSubject(String subjectName) {
