@@ -28,16 +28,8 @@ public class Teacher {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getSubjectID() {
         return subjectID;
-    }
-
-    public void setSubjectID(int subjectID) {
-        this.subjectID = subjectID;
     }
 
     public static List<Teacher> getTeachers() {
@@ -50,7 +42,7 @@ public class Teacher {
         this.subjectID = subjectID;
     }
 
-    private static int getTeacherID(String name) {
+    public static int getTeacherID(String name) {
         int id = 0;
 
         for (Teacher teacher : teachers) {

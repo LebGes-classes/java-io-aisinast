@@ -66,6 +66,9 @@ public class Excel {
                 if ((int) row.getCell(0).getNumericCellValue() == dataID) {
                     sheet.removeRow(row);
                     found = true;
+                    if (i < sheet.getLastRowNum()) {
+                        sheet.shiftRows(i + 1, sheet.getLastRowNum(), -1);
+                    }
                 }
             }
 
