@@ -54,6 +54,21 @@ public class Teacher {
         return id;
     }
 
+    public static String getTeacherName(int id) {
+        String name = null;
+
+        Iterator<Teacher> teacherIterator = teachers.iterator();
+        while (teacherIterator.hasNext()) {
+            Teacher teacher = teacherIterator.next();
+
+            if (teacher.getId() == id) {
+                name = teacher.getName();
+            }
+        }
+
+        return name;
+    }
+
     public static void hireTeacher(String name, String subject) {
         int subjectID = Subject.getSubjectID(subject);
 
