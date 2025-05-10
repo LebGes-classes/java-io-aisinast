@@ -7,6 +7,7 @@ public class AppMenu {
 
     public static void main(String[] args) {
         Student.readFromTable();
+        Lesson.readFromTable();
         Group.readFromTable();
         Subject.readFromTable();
         Teacher.readFromTable();
@@ -159,6 +160,7 @@ public class AppMenu {
             case 1:
             case 2:
             case 3:
+                clearConsole();
                 System.out.println("3. Добавить пару\n");
                 System.out.println("""
                         Выберите день недели:
@@ -218,7 +220,61 @@ public class AppMenu {
 
                 waitForEnter();
                 showScheduleMenu();
+                break;
             case 4:
+                clearConsole();
+                System.out.println("4. Убрать пару из расписания\n");
+
+                System.out.println("""
+                        Выберите день недели:
+                        1 - понедельник
+                        2 - вторник
+                        3 - среда
+                        4 - четверг
+                        5 - пятница
+                        6 - суббота""");
+                System.out.print("Ваш выбор: ");
+                int dayNum = scanner.nextInt();
+                scanner.nextLine();
+
+                String day = null;
+                try {
+                    day = Lesson.dayIsCorrect(dayNum);
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                    waitForEnter();
+                    showScheduleMenu();
+                }
+
+                System.out.println("""
+                        Выберите номер пары:
+                        1 - 8:30 - 10:00
+                        2 - 10:10 - 11:40
+                        3 - 12:10 - 13:40
+                        4 - 13:50 - 15:20
+                        5 - 15:50 - 17:20
+                        6 - 17:30 - 19:00""");
+                System.out.print("Ваш выбор: ");
+                int lessonNum = scanner.nextInt();
+                scanner.nextLine();
+
+                String lessonTime = null;
+                try {
+                    lessonTime = Lesson.timeIsCorrect(lessonNum);
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                    waitForEnter();
+                    showScheduleMenu();
+                }
+
+                System.out.print("Введите номер группы: ");
+                String groupNum = scanner.nextLine();
+
+                Lesson.removeLesson(day, lessonTime, groupNum);
+
+                waitForEnter();
+                showScheduleMenu();
+                break;
             case 0:
                 clearConsole();
                 MainMenu();

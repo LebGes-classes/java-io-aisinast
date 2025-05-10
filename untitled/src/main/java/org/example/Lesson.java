@@ -70,9 +70,32 @@ public class Lesson {
     public static void addLesson(String dayOfWeek, String time, String subject,
                                  String teacher, String group, String classroom) {
         int id = lessons.isEmpty() ? 1 : lessons.getLast().getId() + 1;
+
         int subjectId = Subject.getSubjectID(subject);
+        if (subjectId == 0) {
+            System.out.println("Такого предмета не существует. Повторите попытку");
+            return;
+        }
+
         int teacherId = Teacher.getTeacherID(teacher);
+        if (teacherId == 0) {
+            System.out.println("Такого преподавателя не существует. Повторите попытку");
+            return;
+        }
+
         int groupId = Group.getGroupID(group);
+        if (groupId == 0) {
+            System.out.println("Такой группы не существует. Повторите попытку");
+            return;
+        }
+
+        int checkIfExist = getLessonId(dayOfWeek, time, groupId);
+
+        if (checkIfExist != 0) {
+            System.out.println("У группы " + group + " в это время уже есть пара. Проверьте корректность введенных " +
+                    "данных и повторите попытку");
+            return;
+        }
 
         Lesson lesson = new Lesson(id, dayOfWeek, time, subjectId, teacherId, groupId, classroom);
         lessons.add(lesson);
@@ -82,8 +105,42 @@ public class Lesson {
         System.out.println("Пара добавлена");
     }
 
-    public static void removeLesson() {
+    public static int getLessonId(String dayOfWeek, String time, int groupId) {
+        int id = 0;
 
+        Iterator<Lesson> lessonIterator = lessons.iterator();
+
+        while (lessonIterator.hasNext()) {
+            Lesson lesson = lessonIterator.next();
+
+            if (lesson.dayOfWeek.equals(dayOfWeek) && lesson.time.equals(time) && lesson.getGroupId() == groupId) {
+                id = lesson.getId();
+            }
+        }
+
+        return id;
+    }
+
+    public static void removeLesson(String dayOfWeek, String time, String group) {
+        int groupId = Group.getGroupID(group);
+
+        if (groupId == 0) {
+            System.out.println("Похоже, группы с таким номером не существует. Повторите попытку");
+        }
+
+        int id = getLessonId(dayOfWeek, time, groupId);
+
+        Iterator<Lesson> lessonIterator = lessons.iterator();
+        while (lessonIterator.hasNext()) {
+            Lesson lesson = lessonIterator.next();
+            if (lesson.getId() == id) {
+                lessonIterator.remove();
+            }
+        }
+
+        Excel.removeRow("lessons", id);
+
+        System.out.println("Пара удалена из расписания");
     }
 
     public static void readFromTable() {
