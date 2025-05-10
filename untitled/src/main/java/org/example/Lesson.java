@@ -8,9 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Lesson {
     private int id;
@@ -143,6 +141,80 @@ public class Lesson {
         System.out.println("Пара удалена из расписания");
     }
 
+    public static void printGroupSchedule(String group) {
+        List<Lesson> groupSchedule = new ArrayList<>();
+
+        int groupId = Group.getGroupID(group);
+
+        if (groupId == 0) {
+            System.out.println("Такой группы не существует. Повторите попытку");
+            return;
+        }
+
+        Iterator<Lesson> lessonIterator = lessons.iterator();
+        while (lessonIterator.hasNext()) {
+            Lesson lesson = lessonIterator.next();
+
+            if (lesson.getGroupId() == groupId) {
+                groupSchedule.add(lesson);
+            }
+        }
+
+        sortByDayAndTime(groupSchedule);
+
+        System.out.println("Расписание для группы " + group + ":");
+
+        String currentDay = "";
+        for (Lesson lesson : groupSchedule) {
+            if (!lesson.getDayOfWeek().equals(currentDay)) {
+                currentDay = lesson.getDayOfWeek();
+                System.out.println("\n" + currentDay + ":");
+            }
+            System.out.printf("%s | %s | Преподаватель: %s | Аудитория : %s%n",
+                    lesson.getTime(),
+                    Subject.getSubjectName(lesson.getSubjectId()),
+                    Teacher.getTeacherName(lesson.getTeacherId()),
+                    lesson.getClassroom());
+        }
+    }
+
+    public static void printTeacherSchedule(String teacherName) {
+        List<Lesson> teacherSchedule = new ArrayList<>();
+
+        int teacherId = Teacher.getTeacherID(teacherName);
+
+        if (teacherId == 0) {
+            System.out.println("Такого преподавателя не существует. Повторите попытку");
+            return;
+        }
+
+        Iterator<Lesson> lessonIterator = lessons.iterator();
+        while (lessonIterator.hasNext()) {
+            Lesson lesson = lessonIterator.next();
+
+            if (lesson.getTeacherId() == teacherId) {
+                teacherSchedule.add(lesson);
+            }
+        }
+
+        sortByDayAndTime(teacherSchedule);
+
+        System.out.println("Расписание преподавателя " + teacherName + ":");
+
+        String currentDay = "";
+        for (Lesson lesson : teacherSchedule) {
+            if (!lesson.getDayOfWeek().equals(currentDay)) {
+                currentDay = lesson.getDayOfWeek();
+                System.out.println("\n" + currentDay + ":");
+            }
+            System.out.printf("%s | %s | Группа: %s | Аудитория : %s%n",
+                    lesson.getTime(),
+                    Subject.getSubjectName(lesson.getSubjectId()),
+                    Group.getGroupValue(lesson.getGroupId()),
+                    lesson.getClassroom());
+        }
+    }
+
     public static void readFromTable() {
         try {
             FileInputStream fis = new FileInputStream(Excel.getFilepath());
@@ -228,4 +300,42 @@ public class Lesson {
                 throw new IllegalArgumentException("Некорректный номер пары: " + lessonNumber);
         }
     }
+
+    private static void sortByDayAndTime(List<Lesson> schedule) {
+        Map<String, Integer> dayOrder = new HashMap<>();
+        dayOrder.put("Понедельник", 1);
+        dayOrder.put("Вторник", 2);
+        dayOrder.put("Среда", 3);
+        dayOrder.put("Четверг", 4);
+        dayOrder.put("Пятница", 5);
+        dayOrder.put("Суббота", 6);
+
+        Collections.sort(schedule, new Comparator<Lesson>() {
+            @Override
+            public int compare(Lesson lesson1, Lesson lesson2) {
+                int day1 = dayOrder.get(lesson1.getDayOfWeek());
+                int day2 = dayOrder.get(lesson2.getDayOfWeek());
+
+                if (day1 != day2) {
+                    return Integer.compare(day1, day2);
+                }
+
+                String lesson1Time = lesson1.getTime();
+                String time1 = lesson1Time.charAt(0) == '8' ?
+                        "0" + lesson1Time.charAt(0) + lesson1Time.charAt(1) +
+                                lesson1Time.charAt(2) + lesson1Time.charAt(3) :
+                        "" + lesson1Time.charAt(0) + lesson1Time.charAt(1) +
+                                lesson1Time.charAt(2) + lesson1Time.charAt(3) + lesson1Time.charAt(4);
+                String lesson2Time = lesson2.getTime();
+                String time2 = lesson2Time.charAt(0) == '8' ?
+                        "0" + lesson2Time.charAt(0) + lesson2Time.charAt(1) +
+                                lesson2Time.charAt(2) + lesson2Time.charAt(3) :
+                        "" + lesson2Time.charAt(0) + lesson2Time.charAt(1) +
+                                lesson2Time.charAt(2) + lesson2Time.charAt(3) + lesson2Time.charAt(4);
+
+                return time1.compareTo(time2);
+            }
+        });
+    }
+
 }

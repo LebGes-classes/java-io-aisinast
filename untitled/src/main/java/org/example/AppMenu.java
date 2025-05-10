@@ -158,7 +158,29 @@ public class AppMenu {
 
         switch (choice) {
             case 1:
+                clearConsole();
+                System.out.println("1. Посмотреть расписание группы\n");
+
+                System.out.print("Введите номер группы: ");
+                String group = scanner.nextLine();
+
+                Lesson.printGroupSchedule(group);
+
+                waitForEnter();
+                showScheduleMenu();
+                break;
             case 2:
+                clearConsole();
+                System.out.println("2. Посмотреть расписание преподавателя\n");
+
+                System.out.print("Введите имя преподавателя: ");
+                String teachersName = scanner.nextLine();
+
+                Lesson.printTeacherSchedule(teachersName);
+
+                waitForEnter();
+                showScheduleMenu();
+                break;
             case 3:
                 clearConsole();
                 System.out.println("3. Добавить пару\n");
