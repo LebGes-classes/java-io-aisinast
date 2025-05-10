@@ -24,8 +24,7 @@ public class AppMenu {
                 5. Управление предметами
                 6. Управление преподавателями
                 0. Выход
-                \nВыберите действие: 
-                """);
+                \nВыберите действие: """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -41,7 +40,7 @@ public class AppMenu {
                 break;
             case 3:
                 clearConsole();
-
+                showScheduleMenu();
                 break;
             case 4:
                 clearConsole();
@@ -74,8 +73,7 @@ public class AppMenu {
                 3. Отчислить студента
                 4. Вывести список всех студентов
                 0. Назад
-                \nВыберите действие: 
-                """);
+                \nВыберите действие: """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -133,12 +131,102 @@ public class AppMenu {
                 showStudentMenu();
                 break;
             case 0:
+                clearConsole();
                 MainMenu();
                 break;
             default:
                 System.out.println("Некорректный ввод!");
                 waitForEnter();
                 showStudentMenu();
+                break;
+        }
+    }
+
+    public static void showScheduleMenu() {
+        System.out.print("""
+                \t\tУПРАВЛЕНИЕ РАСПИСАНИЕМ
+                1. Посмотреть расписание группы
+                2. Посмотреть расписание преподавателя
+                3. Добавить пару
+                4. Убрать пару из расписания
+                0. Назад
+                \nВыберите действие: """);
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+            case 2:
+            case 3:
+                System.out.println("3. Добавить пару\n");
+                System.out.println("""
+                        Выберите день недели:
+                        1 - понедельник
+                        2 - вторник
+                        3 - среда
+                        4 - четверг
+                        5 - пятница
+                        6 - суббота""");
+                System.out.print("Ваш выбор: ");
+                int dayNumber = scanner.nextInt();
+                scanner.nextLine();
+
+                String dayOfWeek = null;
+                try {
+                    dayOfWeek = Lesson.dayIsCorrect(dayNumber);
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                    waitForEnter();
+                    showScheduleMenu();
+                }
+
+                System.out.println("""
+                        Выберите номер пары:
+                        1 - 8:30 - 10:00
+                        2 - 10:10 - 11:40
+                        3 - 12:10 - 13:40
+                        4 - 13:50 - 15:20
+                        5 - 15:50 - 17:20
+                        6 - 17:30 - 19:00""");
+                System.out.print("Ваш выбор: ");
+                int lessonNumber = scanner.nextInt();
+                scanner.nextLine();
+
+                String time = null;
+                try {
+                    time = Lesson.timeIsCorrect(lessonNumber);
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                    waitForEnter();
+                    showScheduleMenu();
+                }
+
+                System.out.print("Введите название предмета: ");
+                String subjectName = scanner.nextLine();
+
+                System.out.print("Введите имя преподавателя: ");
+                String teacherName = scanner.nextLine();
+
+                System.out.print("Введите номер группы: ");
+                String groupNumber = scanner.nextLine();
+
+                System.out.print("Введите номер аудитории: ");
+                String classroom = scanner.nextLine();
+
+                Lesson.addLesson(dayOfWeek, time, subjectName, teacherName, groupNumber, classroom);
+
+                waitForEnter();
+                showScheduleMenu();
+            case 4:
+            case 0:
+                clearConsole();
+                MainMenu();
+                break;
+            default:
+                System.out.println("Некорректный ввод!");
+                waitForEnter();
+                showScheduleMenu();
                 break;
         }
     }
@@ -151,8 +239,7 @@ public class AppMenu {
                 3. Добавить новую группу
                 4. Удалить группу
                 0. Назад
-                \nВыберите действие: 
-                """);
+                \nВыберите действие: """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -226,8 +313,7 @@ public class AppMenu {
                 2. Удалить предмет
                 3. Вывести список всех предметов
                 0. Назад
-                \nВыберите действие: 
-                """);
+                \nВыберите действие: """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -286,8 +372,7 @@ public class AppMenu {
                 2. Нанять преподавателя
                 3. Уволить преподавателя
                 0. Назад
-                \nВыберите действие: 
-                """);
+                \nВыберите действие: """);
 
         int choice = scanner.nextInt();
         scanner.nextLine();
