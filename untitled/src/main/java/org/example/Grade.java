@@ -8,9 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Grade {
     private int id;
@@ -22,6 +20,18 @@ public class Grade {
 
     public int getId() {
         return id;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     public Grade(int id, int studentId, int subjectId, int value) {
@@ -54,6 +64,48 @@ public class Grade {
         Grade.addIntoTable(id, studentId, subjectId, value);
 
         System.out.println("Оценка добавлена");
+    }
+
+    public static void printStudentGradesList(String name) {
+        int studentId = Student.getStudentID(name);
+
+        if (studentId == 0) {
+            System.out.println("Похоже, такого студента не существует");
+            return;
+        }
+
+        List<Grade> studentGrage = new ArrayList<>();
+
+        Iterator<Grade> gradeIterator = grades.iterator();
+        while (gradeIterator.hasNext()) {
+            Grade grade = gradeIterator.next();
+
+            if (grade.getStudentId() == studentId) {
+                studentGrage.add(grade);
+            }
+        }
+
+        Collections.sort(studentGrage, new Comparator<Grade>() {
+            @Override
+            public int compare(Grade grade1, Grade grade2) {
+                int grade1Id = grade1.getSubjectId();
+                int grade2Id = grade2.getSubjectId();
+
+                return Integer.compare(grade1Id, grade2Id);
+            }
+        });
+
+        System.out.println("Оценки студента " + name + ": ");
+
+        int currentSubject = 0;
+        for (Grade grade : studentGrage) {
+            if (grade.getSubjectId() != currentSubject) {
+                currentSubject = grade.getSubjectId();
+                System.out.println("\n" + Subject.getSubjectName(currentSubject) + ":");
+            }
+
+            System.out.println(grade.getValue() + " ");
+        }
     }
 
     public static void readFromTable() {

@@ -147,7 +147,7 @@ public class AppMenu {
         System.out.println("""
                 \t\tУПРАВЛЕНИЕ ОЦЕНКАМИ
                 1. Поставить оценку
-                2. Посмотреть оценки студента по всем предметами
+                2. Посмотреть оценки студента по всем предметам
                 3. Посмотреть оценки студентов группы по предмету
                 0. Назад
                 \nВыберите действие: """);
@@ -176,6 +176,17 @@ public class AppMenu {
                 showGradeMenu();
                 break;
             case 2:
+                clearConsole();
+                System.out.println("2. Посмотреть оценки студента по всем предметам");
+
+                System.out.print("Введите имя студента: ");
+                String studentName = scanner.nextLine();
+
+                Grade.printStudentGradesList(studentName);
+
+                waitForEnter();
+                showGradeMenu();
+                break;
             case 3:
             case 0:
                 clearConsole();
