@@ -7,6 +7,7 @@ public class AppMenu {
 
     public static void main(String[] args) {
         Student.readFromTable();
+        Grade.readFromTable();
         Lesson.readFromTable();
         Group.readFromTable();
         Subject.readFromTable();
@@ -37,7 +38,7 @@ public class AppMenu {
                 break;
             case 2:
                 clearConsole();
-
+                showGradeMenu();
                 break;
             case 3:
                 clearConsole();
@@ -60,7 +61,6 @@ public class AppMenu {
             default:
                 System.out.println("Некорректный ввод!");
                 waitForEnter();
-                clearConsole();
                 MainMenu();
                 break;
         }
@@ -139,6 +139,52 @@ public class AppMenu {
                 System.out.println("Некорректный ввод!");
                 waitForEnter();
                 showStudentMenu();
+                break;
+        }
+    }
+
+    public static void showGradeMenu() {
+        System.out.println("""
+                \t\tУПРАВЛЕНИЕ ОЦЕНКАМИ
+                1. Поставить оценку
+                2. Посмотреть оценки студента по всем предметами
+                3. Посмотреть оценки студентов группы по предмету
+                0. Назад
+                \nВыберите действие: """);
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                clearConsole();
+
+                System.out.println("1. Поставить оценку\n");
+
+                System.out.print("Введите ФИО студента: ");
+                String name = scanner.nextLine();
+
+                System.out.print("Введите название предмета: ");
+                String subject = scanner.nextLine();
+
+                System.out.print("Введите оценку (от 1 до 20): ");
+                int grade = scanner.nextInt();
+
+                Grade.addGrade(name, subject, grade);
+
+                waitForEnter();
+                showGradeMenu();
+                break;
+            case 2:
+            case 3:
+            case 0:
+                clearConsole();
+                MainMenu();
+                break;
+            default:
+                System.out.println("Некорректный ввод!");
+                waitForEnter();
+                showGradeMenu();
                 break;
         }
     }
