@@ -188,6 +188,19 @@ public class AppMenu {
                 showGradeMenu();
                 break;
             case 3:
+                clearConsole();
+
+                System.out.print("Введите номер группы: ");
+                String group = scanner.nextLine();
+
+                System.out.print("Введите название предмета: ");
+                String subjectName = scanner.nextLine();
+
+                Grade.printGroupGradesList(group, subjectName);
+
+                waitForEnter();
+                showGradeMenu();
+                break;
             case 0:
                 clearConsole();
                 MainMenu();

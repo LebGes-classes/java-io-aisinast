@@ -42,7 +42,7 @@ public class Grade {
     }
 
     public static void addGrade(String name, String subject, int value) {
-        int studentId = Student.getStudentID(name);
+        int studentId = Student.getStudentId(name);
 
         if (studentId == 0) {
             System.out.println("Похоже, такого студента не существует");
@@ -67,7 +67,7 @@ public class Grade {
     }
 
     public static void printStudentGradesList(String name) {
-        int studentId = Student.getStudentID(name);
+        int studentId = Student.getStudentId(name);
 
         if (studentId == 0) {
             System.out.println("Похоже, такого студента не существует");
@@ -102,6 +102,55 @@ public class Grade {
             if (grade.getSubjectId() != currentSubject) {
                 currentSubject = grade.getSubjectId();
                 System.out.println("\n" + Subject.getSubjectName(currentSubject) + ":");
+            }
+
+            System.out.println(grade.getValue() + " ");
+        }
+    }
+
+    public static void printGroupGradesList(String group, String subject) {
+        int groupId = Group.getGroupID(group);
+
+        if (groupId == 0) {
+            System.out.println("Похоже, такой группы не существует");
+            return;
+        }
+
+        int subjectId = Subject.getSubjectID(subject);
+
+        if (subjectId == 0) {
+            System.out.println("Похоже, такого предмета не существует");
+            return;
+        }
+
+        List<Grade> groupGrades = new ArrayList<>();
+
+        Iterator<Grade> gradeIterator = grades.iterator();
+        while (gradeIterator.hasNext()) {
+            Grade grade = gradeIterator.next();
+
+            if (grade.getSubjectId() == subjectId && Student.getGroupId(grade.getStudentId()) == groupId) {
+                groupGrades.add(grade);
+            }
+        }
+
+        Collections.sort(groupGrades, new Comparator<Grade>() {
+            @Override
+            public int compare(Grade grade1, Grade grade2) {
+                String student1 = Student.getName(grade1.getStudentId());
+                String student2 = Student.getName(grade2.getStudentId());
+
+                return student1.compareTo(student2);
+            }
+        });
+
+        System.out.println("Оценки группы " + group + " по предмету " + subject + ":");
+
+        int currentStudentId = 0;
+        for (Grade grade : groupGrades) {
+            if (grade.getStudentId() != currentStudentId) {
+                currentStudentId = grade.getStudentId();
+                System.out.print(Student.getName(grade.getStudentId()) + ": ");
             }
 
             System.out.println(grade.getValue() + " ");

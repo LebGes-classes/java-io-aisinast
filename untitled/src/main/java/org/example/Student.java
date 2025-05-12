@@ -97,7 +97,7 @@ public class Student {
     }
 
     public static void expelStudent(String name) {
-        int id = Student.getStudentID(name);
+        int id = Student.getStudentId(name);
 
         if (id == -1) {
             System.out.println("Похоже, студента с таким именем не существует. Повторите попытку");
@@ -116,7 +116,7 @@ public class Student {
         }
     }
 
-    public static int getStudentID(String name) {
+    public static int getStudentId(String name) {
     for (Student student : students) {
             if (student.getName().equals(name)) {
                 return student.getId();
@@ -124,6 +124,28 @@ public class Student {
         }
 
     return -1;
+    }
+
+    public static int getGroupId(int studentId){
+        for (Student student : students) {
+            if (student.getId() == studentId) {
+                return student.getGroupID();
+            }
+        }
+
+        return -1;
+    }
+
+    public static String getName(int studentId) {
+        String name = null;
+
+        for (Student student : students) {
+            if (student.getId() == studentId) {
+                name = student.getName();
+            }
+        }
+
+        return name;
     }
 
     public String toString() {
