@@ -5,22 +5,23 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class Teacher {
+public class Teacher implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String name;
     private int subjectID;
 
     static List<Teacher> teachers = new ArrayList<>();
 
-    public static void loadGradeData() {
+    public static void loadTeacherData() {
         List<Teacher> loaded = SerializationAndDeserialization.deserializeFromJson(
                 "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/teacher.json",
                 Teacher.class

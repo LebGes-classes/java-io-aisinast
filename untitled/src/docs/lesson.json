@@ -1,38 +1,47 @@
 [
   {
-    "id": 1.0,
+    "id": 1,
     "dayOfWeek": "Понедельник",
     "time": "12:10 - 13:40",
-    "subjectID": 2.0,
-    "teacherID": 2.0,
-    "groupID": 1.0,
+    "subjectID": 2,
+    "teacherID": 2,
+    "groupID": 1,
     "classroom": "108"
   },
   {
-    "id": 2.0,
+    "id": 2,
     "dayOfWeek": "Среда",
     "time": "13:50 - 15:20",
-    "subjectID": 3.0,
-    "teacherID": 4.0,
-    "groupID": 1.0,
+    "subjectID": 3,
+    "teacherID": 4,
+    "groupID": 1,
     "classroom": "108"
   },
   {
-    "id": 3.0,
+    "id": 3,
     "dayOfWeek": "Среда",
     "time": "12:10 - 13:40",
-    "subjectID": 3.0,
-    "teacherID": 4.0,
-    "groupID": 1.0,
+    "subjectID": 3,
+    "teacherID": 4,
+    "groupID": 1,
     "classroom": "1306"
   },
   {
-    "id": 4.0,
+    "id": 4,
     "dayOfWeek": "Среда",
     "time": "15:50 - 17:20",
-    "subjectID": 4.0,
-    "teacherID": 3.0,
-    "groupID": 1.0,
+    "subjectID": 4,
+    "teacherID": 3,
+    "groupID": 1,
     "classroom": "108"
+  },
+  {
+    "id": 5,
+    "dayOfWeek": "Четверг",
+    "time": "10:10 - 11:40",
+    "subjectID": 2,
+    "teacherID": 6,
+    "groupID": 1,
+    "classroom": "1307"
   }
 ]

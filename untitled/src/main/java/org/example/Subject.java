@@ -1,23 +1,59 @@
 package org.example;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class Subject {
+public class Subject implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2L;
+
+    @SerializedName("ID")
     private int id;
+
+    @SerializedName("name")
     private String subjectName;
 
     private static List<Subject> subjects = new ArrayList<>();
+
+    public static void loadSubjectData() {
+        File jsonFile = new File("/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/subject.json");
+        if (jsonFile.exists()) {
+            try (FileReader reader = new FileReader(jsonFile)) {
+                Type listType = new TypeToken<List<Subject>>(){}.getType();
+                List<Subject> loaded = new Gson().fromJson(reader, listType);
+
+                if (loaded != null) {
+                    subjects = loaded;
+                    System.out.println("Данные загружены из JSON, количество: " + subjects.size());
+                    return;
+                }
+            } catch (IOException e) {
+                System.err.println("Ошибка чтения JSON: " + e.getMessage());
+            }
+        }
+
+        System.out.println("Загрузка данных из Excel...");
+        readFromTable();
+    }
+
+    public static void saveToJson() {
+        SerializationAndDeserialization.serializeToJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/subject.json",
+                subjects
+        );
+    }
 
     public int getId() {
         return id;
@@ -38,6 +74,10 @@ public class Subject {
 
     public static void addNewSubject(String subjectName) {
         for (Subject subject : subjects) {
+//            if (Subject.getSubjects() == null) {
+//                subject.toString();
+//                return;
+//            }
             if (subject.getSubjectName().equals(subjectName)) {
                 System.out.println("Такой предмет уже существует");
                 return;
@@ -50,6 +90,7 @@ public class Subject {
         subjects.add(subject);
 
         subject.addIntoTable();
+        saveToJson();
 
         System.out.println("Предмет добавлен!");
     }
@@ -92,6 +133,7 @@ public class Subject {
         }
 
         Excel.removeRow("subjects", id);
+        saveToJson();
 
         System.out.println("Предмет удален");
     }
@@ -107,6 +149,8 @@ public class Subject {
     }
 
     public static void readFromTable() {
+        subjects.clear();
+
         try {
             FileInputStream fis = new FileInputStream(Excel.getFilepath());
             Workbook workbook = new XSSFWorkbook(fis);
@@ -129,6 +173,8 @@ public class Subject {
 
             fis.close();
             workbook.close();
+
+            saveToJson();
         } catch (IOException E) {
             throw new RuntimeException(E);
         }

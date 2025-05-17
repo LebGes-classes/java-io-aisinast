@@ -5,12 +5,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-public class Grade {
+public class Grade implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private int studentId;
     private int subjectId;

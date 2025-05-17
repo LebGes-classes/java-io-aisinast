@@ -1,22 +1,31 @@
 package org.example;
 
+import com.google.gson.annotations.SerializedName;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-public class Lesson {
+public class Lesson implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String dayOfWeek;
     private String time;
+
+    @SerializedName("subjectID")
     private int subjectId;
+
+    @SerializedName("teacherID")
     private int teacherId;
+
+    @SerializedName("groupID")
     private int groupId;
+
     private String classroom;
 
     private static List<Lesson> lessons = new ArrayList<>();
@@ -180,6 +189,11 @@ public class Lesson {
             }
         }
 
+        if (groupSchedule.isEmpty()) {
+            System.out.println("Расписание не составлено");
+            return;
+        }
+
         sortByDayAndTime(groupSchedule);
 
         System.out.println("Расписание для группы " + group + ":");
@@ -190,7 +204,9 @@ public class Lesson {
                 currentDay = lesson.getDayOfWeek();
                 System.out.println("\n" + currentDay + ":");
             }
-            System.out.printf("%s | %s | Преподаватель: %s | Аудитория : %s%n",
+
+
+            System.out.printf("%s | %s | Преподаватель: %s | Аудитория: %s%n",
                     lesson.getTime(),
                     Subject.getSubjectName(lesson.getSubjectId()),
                     Teacher.getTeacherName(lesson.getTeacherId()),

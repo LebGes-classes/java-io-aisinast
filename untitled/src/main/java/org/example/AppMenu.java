@@ -10,8 +10,8 @@ public class AppMenu {
         Grade.loadGradeData();
         Lesson.loadLessonData();
         Group.loadGroupData();
-        Subject.loadGradeData();
-        Teacher.loadGradeData();
+        Subject.loadSubjectData();
+        Teacher.loadTeacherData();
 
         MainMenu();
     }

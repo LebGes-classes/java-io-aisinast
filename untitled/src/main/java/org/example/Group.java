@@ -6,15 +6,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class Group {
+public class Group implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String value;
 
@@ -42,14 +43,6 @@ public class Group {
 
     public String getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public static List<Group> getGroups() {
-        return groups;
     }
 
     public Group(int id, String value) {
@@ -189,8 +182,6 @@ public class Group {
 
             fis.close();
             workbook.close();
-
-            saveToJson();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
