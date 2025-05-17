@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1.0,
+    "dayOfWeek": "Понедельник",
+    "time": "12:10 - 13:40",
+    "subjectID": 2.0,
+    "teacherID": 2.0,
+    "groupID": 1.0,
+    "classroom": "108"
+  },
+  {
+    "id": 2.0,
+    "dayOfWeek": "Среда",
+    "time": "13:50 - 15:20",
+    "subjectID": 3.0,
+    "teacherID": 4.0,
+    "groupID": 1.0,
+    "classroom": "108"
+  },
+  {
+    "id": 3.0,
+    "dayOfWeek": "Среда",
+    "time": "12:10 - 13:40",
+    "subjectID": 3.0,
+    "teacherID": 4.0,
+    "groupID": 1.0,
+    "classroom": "1306"
+  },
+  {
+    "id": 4.0,
+    "dayOfWeek": "Среда",
+    "time": "15:50 - 17:20",
+    "subjectID": 4.0,
+    "teacherID": 3.0,
+    "groupID": 1.0,
+    "classroom": "108"
+  }
+]
