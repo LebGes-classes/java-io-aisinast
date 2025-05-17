@@ -20,6 +20,22 @@ public class Group {
 
     static List<Group> groups = new ArrayList<>();
 
+    public static void loadGroupData() {
+        List<Group> loaded = SerializationAndDeserialization.deserializeFromJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/group.json",
+                Group.class
+        );
+
+        groups = (loaded != null) ? loaded : new ArrayList<>();
+    }
+
+    public static void saveToJson() {
+        SerializationAndDeserialization.serializeToJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/group.json",
+                groups
+        );
+    }
+
     public int getId() {
         return id;
     }
@@ -81,6 +97,7 @@ public class Group {
         groups.add(group);
 
         group.addIntoTable();
+        saveToJson();
 
         System.out.println("Группа " + groupNumber + " успешно создана!");
     }
@@ -109,6 +126,8 @@ public class Group {
         }
 
         Excel.removeRow("groups", groupID);
+
+        saveToJson();
 
         System.out.println("Группа удалена");
     }
@@ -170,6 +189,8 @@ public class Group {
 
             fis.close();
             workbook.close();
+
+            saveToJson();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

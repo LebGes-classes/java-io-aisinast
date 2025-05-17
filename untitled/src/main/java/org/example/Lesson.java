@@ -21,6 +21,22 @@ public class Lesson {
 
     private static List<Lesson> lessons = new ArrayList<>();
 
+    public static void loadLessonData() {
+        List<Lesson> loaded = SerializationAndDeserialization.deserializeFromJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/lesson.json",
+                Lesson.class
+        );
+
+        lessons = (loaded != null) ? loaded : new ArrayList<>();
+    }
+
+    public static void saveToJson() {
+        SerializationAndDeserialization.serializeToJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/lesson.json",
+                lessons
+        );
+    }
+
     public Lesson(int id, String dayOfWeek, String time, int subjectId,
                   int teacherId, int groupId, String classroom) {
         this.id = id;
@@ -36,7 +52,7 @@ public class Lesson {
         return id;
     }
 
-    public String  getDayOfWeek() {
+    public String getDayOfWeek() {
         return dayOfWeek;
     }
 
@@ -100,6 +116,8 @@ public class Lesson {
 
         lesson.addIntoTable();
 
+        saveToJson();
+
         System.out.println("Пара добавлена");
     }
 
@@ -137,6 +155,8 @@ public class Lesson {
         }
 
         Excel.removeRow("lessons", id);
+
+        saveToJson();
 
         System.out.println("Пара удалена из расписания");
     }
@@ -242,6 +262,8 @@ public class Lesson {
 
             workbook.close();
             fis.close();
+
+            saveToJson();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

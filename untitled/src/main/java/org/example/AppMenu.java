@@ -6,12 +6,12 @@ public class AppMenu {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Student.readFromTable();
-        Grade.readFromTable();
-        Lesson.readFromTable();
-        Group.readFromTable();
-        Subject.readFromTable();
-        Teacher.readFromTable();
+        Student.loadStudentData();
+        Grade.loadGradeData();
+        Lesson.loadLessonData();
+        Group.loadGroupData();
+        Subject.loadGradeData();
+        Teacher.loadGradeData();
 
         MainMenu();
     }
@@ -118,7 +118,7 @@ public class AppMenu {
 
                 System.out.println("3. Отчислить студента\n");
 
-                System.out.print("Введите имя студента: ");
+                System.out.print("Введите ФИО студента: ");
                 String studentToExpelName = scanner.nextLine();
 
                 Student.expelStudent(studentToExpelName);
@@ -179,7 +179,7 @@ public class AppMenu {
                 clearConsole();
                 System.out.println("2. Посмотреть оценки студента по всем предметам");
 
-                System.out.print("Введите имя студента: ");
+                System.out.print("Введите ФИО студента: ");
                 String studentName = scanner.nextLine();
 
                 Grade.printStudentGradesList(studentName);
@@ -243,7 +243,7 @@ public class AppMenu {
                 clearConsole();
                 System.out.println("2. Посмотреть расписание преподавателя\n");
 
-                System.out.print("Введите имя преподавателя: ");
+                System.out.print("Введите ФИО преподавателя: ");
                 String teachersName = scanner.nextLine();
 
                 Lesson.printTeacherSchedule(teachersName);

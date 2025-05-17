@@ -18,6 +18,22 @@ public class Grade {
 
     private static List<Grade> grades = new ArrayList<>();
 
+    public static void loadGradeData() {
+        List<Grade> loaded = SerializationAndDeserialization.deserializeFromJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/grade.json",
+                Grade.class
+        );
+
+        grades = (loaded != null) ? loaded : new ArrayList<>();
+    }
+
+    public static void saveToJson() {
+        SerializationAndDeserialization.serializeToJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/grade.json",
+                grades
+        );
+    }
+
     public int getId() {
         return id;
     }
@@ -62,6 +78,7 @@ public class Grade {
         grades.add(grade);
 
         Grade.addIntoTable(id, studentId, subjectId, value);
+        saveToJson();
 
         System.out.println("Оценка добавлена");
     }
@@ -144,17 +161,18 @@ public class Grade {
             }
         });
 
-        System.out.println("Оценки группы " + group + " по предмету " + subject + ":");
+        System.out.println("\nОценки группы " + group + " по предмету " + subject + ":");
 
         int currentStudentId = 0;
         for (Grade grade : groupGrades) {
             if (grade.getStudentId() != currentStudentId) {
                 currentStudentId = grade.getStudentId();
-                System.out.print(Student.getName(grade.getStudentId()) + ": ");
+                System.out.print("\n" + Student.getName(grade.getStudentId()) + ": ");
             }
 
-            System.out.println(grade.getValue() + " ");
+            System.out.print(grade.getValue() + " ");
         }
+        System.out.println();
     }
 
     public static void readFromTable() {
@@ -182,6 +200,8 @@ public class Grade {
 
             fis.close();
             workbook.close();
+
+            saveToJson();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -212,5 +232,7 @@ public class Grade {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        saveToJson();
     }
 }

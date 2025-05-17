@@ -20,6 +20,22 @@ public class Teacher {
 
     static List<Teacher> teachers = new ArrayList<>();
 
+    public static void loadGradeData() {
+        List<Teacher> loaded = SerializationAndDeserialization.deserializeFromJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/teacher.json",
+                Teacher.class
+        );
+
+        teachers = (loaded != null) ? loaded : new ArrayList<>();
+    }
+
+    public static void saveToJson() {
+        SerializationAndDeserialization.serializeToJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/teacher.json",
+                teachers
+        );
+    }
+
     public int getId() {
         return id;
     }
@@ -89,6 +105,7 @@ public class Teacher {
         teachers.add(teacher);
 
         teacher.addIntoTable();
+        saveToJson();
 
         System.out.println("Преподаватель " + name + " успешно добавлен!");
     }
@@ -111,6 +128,7 @@ public class Teacher {
         }
 
         Excel.removeRow("teachers", id);
+        saveToJson();
 
         System.out.println(name + " уволен(-а) :(");
     }
@@ -152,6 +170,8 @@ public class Teacher {
 
             fis.close();
             workbook.close();
+
+            saveToJson();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

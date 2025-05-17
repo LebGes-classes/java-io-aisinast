@@ -6,19 +6,29 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Student {
+public class Student implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String name;
     private int groupID;
 
     private static List<Student> students = new ArrayList<>();
+
+    public static void loadStudentData() {
+        List<Student> loaded = SerializationAndDeserialization.deserializeFromJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/students.json",
+                Student.class
+        );
+
+        students = (loaded != null) ? loaded : new ArrayList<>();
+    }
 
     public int getId() {
         return id;
@@ -47,7 +57,6 @@ public class Student {
     }
 
     public static void addNewStudent(String name, String group) {
-        int newId = students.getLast().getId() + 1;
         int groupID = Group.getGroupID(group);
 
         if (groupID == 0) {
@@ -55,11 +64,18 @@ public class Student {
             return;
         }
 
+        int newId = students.isEmpty() ? 1 : students.get(students.size() - 1).getId() + 1;
+
         Student student = new Student(newId, name, groupID);
 
         students.add(student);
 
         student.addIntoTable();
+
+        SerializationAndDeserialization.serializeToJson(
+                "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/students.json",
+                students
+        );
 
         System.out.println("Ученик успешно добавлен!" + "\n" + student.toString());
     }
@@ -86,6 +102,12 @@ public class Student {
             System.out.println("Имя введено некорректно или студента с таким именем не существует. Повторите попытку");
         } else {
             Excel.changeCellValue("students", studentID, 2, Group.getGroupID(newGroup));
+
+            SerializationAndDeserialization.serializeToJson(
+                    "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/students.json",
+                    students
+            );
+
             System.out.println(name + " успешно переведен(-а) в группу " + newGroup);
         }
     }
@@ -111,6 +133,11 @@ public class Student {
                     studentIterator.remove();
                 }
             }
+
+            SerializationAndDeserialization.serializeToJson(
+                    "/Users/mac/code/Java/ИиП/java-io-aisinast/untitled/src/docs/students.json",
+                    students
+            );
 
             System.out.println(name + " отчислен(-а) :(");
         }
@@ -152,7 +179,9 @@ public class Student {
         return ("ID: " + id + ", имя: " + name + ", " + Group.getGroupValue(groupID));
     }
 
-    public static void readFromTable() {
+    public static List<Student> readFromTable() {
+        List<Student> list = new ArrayList<>();
+
         try {
             FileInputStream fis = new FileInputStream(Excel.getFilepath());
 
@@ -171,7 +200,7 @@ public class Student {
 
                     Student student = new Student(idFromCell, nameFromCell, groupIdFromCell);
 
-                    students.add(student);
+                    list.add(student);
                 }
             }
 
@@ -180,6 +209,8 @@ public class Student {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return list;
     }
 
     private void addIntoTable() {
@@ -197,8 +228,8 @@ public class Student {
             row.createCell(2);
 
             row.getCell(0).setCellValue(students.getLast().getId());
-            row.getCell(1).setCellValue(name);
-            row.getCell(2).setCellValue(groupID);
+            row.getCell(1).setCellValue(students.getLast().getName());
+            row.getCell(2).setCellValue(students.getLast().getGroupID());
 
             FileOutputStream fos = new FileOutputStream(Excel.getFilepath());
             workbook.write(fos);

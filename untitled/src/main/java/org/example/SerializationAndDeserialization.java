@@ -12,24 +12,24 @@ public class SerializationAndDeserialization <E> {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static <E> void serializeToJson(String filename, List<E> list) {
-        try (FileWriter writer = new FileWriter(filename)) {
+    public static <E> void serializeToJson(String filePath, List<E> list) {
+        try (FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(list, writer);
 
-            System.out.println("Данные успешно сохранены в файл: " + filename);
+            System.out.println("Данные успешно сохранены в файл: " + filePath);
         } catch (IOException e) {
             System.err.println("Ошибка при сериализации: " + e.getMessage());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static <E> List<E> deserializeFromJson(String filename, Class<E> elementClass) {
-        try (FileReader reader = new FileReader(filename)) {
+    public static <E> List<E> deserializeFromJson(String filePath, Class<E> elementClass) {
+        try (FileReader reader = new FileReader(filePath)) {
             Type listType = TypeToken.getParameterized(List.class, elementClass).getType();
 
             List<E> list = gson.fromJson(reader, listType);
 
-            System.out.println("Данные загружены из JSON: " + filename);
+            System.out.println("Данные загружены из JSON: " + filePath);
             return list;
         } catch (IOException e) {
             System.err.println("Ошибка при десериализации: " + e.getMessage());
@@ -37,11 +37,11 @@ public class SerializationAndDeserialization <E> {
         }
     }
 
-    public static <E> List<E> loadData(String filename, Class<E> elementClass) {
-        File file = new File(filename);
+    public static <E> List<E> loadData(String filePath, Class<E> elementClass) {
+        File file = new File(filePath);
 
         if (file.exists()) {
-            return deserializeFromJson(filename, elementClass);
+            return deserializeFromJson(filePath, elementClass);
         } else if (Student.class == elementClass) {
             Student.readFromTable();
         } else if (Teacher.class == elementClass) {
